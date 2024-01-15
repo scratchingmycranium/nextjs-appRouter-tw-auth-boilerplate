@@ -1,4 +1,4 @@
-import { APIError } from "../types";
+import { APIError } from "../../types/types";
 
 const BASE_API_URL = 'http://localhost:8080';
 
