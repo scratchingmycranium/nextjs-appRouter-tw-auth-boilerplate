@@ -1,5 +1,5 @@
 // UserProvider.js
-import { User } from '@/types/types';
+import { User } from '@/types';
 import React, { createContext, useContext, useState } from 'react';
 
 const UserContext = createContext({});

@@ -1,4 +1,4 @@
-import { UpdateUserData, User } from "../../types/types";
+import { UpdateUserData, User } from "@/types";
 import { BaseAPI } from "./baseAPI";
 
 /**
