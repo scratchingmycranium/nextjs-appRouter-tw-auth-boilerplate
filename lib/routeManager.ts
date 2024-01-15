@@ -1,7 +1,7 @@
 enum RouteKeys {
   HOME = 'HOME',
   DASHBOARD = 'DASHBOARD',
-  PROFILE = 'PROFILE',
+  LOGIN = 'LOGIN',
 }
 
 /**
@@ -23,7 +23,7 @@ class RouteManager {
     this.routes = {
       [RouteKeys.HOME]: { path: '/', isProtected: false },
       [RouteKeys.DASHBOARD]: { path: '/dashboard', isProtected: true },
-      [RouteKeys.PROFILE]: { path: '/profile', isProtected: true },
+      [RouteKeys.LOGIN]: { path: '/login', isProtected: false },
     };
   }
 
@@ -44,8 +44,18 @@ class RouteManager {
    * @param key - The key of the route to retrieve.
    * @returns The route associated with the provided key, or undefined if not found.
    */
-  getRoute(key: RouteKeys): Route | undefined {
+  getRoute(key: RouteKeys): Route  {
     return this.routes[key];
+  }
+
+  /**
+   * Retrieves the path for a given route key.
+   * @param key - The key of the route.
+   * @returns The path of the route, or '/' if the route is not found.
+   */
+  getRoutePath(key: RouteKeys): string {
+    const route = this.getRoute(key);
+    return route ? route.path : '/';
   }
 
   /**

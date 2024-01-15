@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import SessionManager from './lib/sessionManager';
+import { RouteKeys, routeManager } from './lib/routeManager';
 
-// This function can be marked `async` if using `await` inside
+/**
+ * Middleware function that handles session validation and redirection.
+ * 
+ * @param request - The NextRequest object representing the incoming request.
+ * @returns A NextResponse object representing the response to be sent.
+ */
 export async function middleware(request: NextRequest) {
 
   // Extract cookies from the request
@@ -15,15 +21,14 @@ export async function middleware(request: NextRequest) {
 
   // If the session is valid, continue to the next middleware
   if (isValid) {
-    console.log(request.url.includes('/login'))
     // if url is /login, redirect to /
-    if (request.url.includes('/login')) {
-     return NextResponse.redirect(new URL('/', request.url))
+    if (request.url.includes(routeManager.getRoutePath(RouteKeys.LOGIN))) {
+     return NextResponse.redirect(new URL(routeManager.getRoutePath(RouteKeys.HOME), request.url))
     }
     return NextResponse.next()
   }
 
-  return NextResponse.redirect(new URL('/login', request.url))
+  return NextResponse.redirect(new URL(routeManager.getRoutePath(RouteKeys.LOGIN), request.url))
 }
 
 export const config = {
