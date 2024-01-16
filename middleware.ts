@@ -11,6 +11,10 @@ import { RouteKeys, routeManager } from './lib/routeManager';
  */
 export async function middleware(request: NextRequest) {
 
+  const publicRoutes = [
+    routeManager.getRoutePath(RouteKeys.LOGIN),
+  ]
+
   // Extract cookies from the request
   const cookies = request.cookies;
 
@@ -21,13 +25,18 @@ export async function middleware(request: NextRequest) {
 
   // If the session is valid, continue to the next middleware
   if (isValid) {
-    // if url is /login, redirect to /
-    if (request.url.includes(routeManager.getRoutePath(RouteKeys.LOGIN))) {
+    // If the user is trying to access a public route, redirect to the home page
+    if (publicRoutes.includes(request.nextUrl.pathname)) {
      return NextResponse.redirect(new URL(routeManager.getRoutePath(RouteKeys.HOME), request.url))
     }
     return NextResponse.next()
   }
 
+  // If the route is the login page, continue to the next middleware
+  if (request.nextUrl.pathname === routeManager.getRoutePath(RouteKeys.LOGIN)) {
+    return NextResponse.next()
+  }
+  
   return NextResponse.redirect(new URL(routeManager.getRoutePath(RouteKeys.LOGIN), request.url))
 }
 
@@ -41,6 +50,5 @@ export const config = {
      * - favicon.ico (favicon file)
      */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
-    '/login'
   ],
 }
