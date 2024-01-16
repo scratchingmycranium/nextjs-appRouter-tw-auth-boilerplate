@@ -34,6 +34,14 @@ class AuthAPI extends BaseAPI {
     return this.makeRequest('v1/auth/signup', 'POST', credentials,  { 'Content-Type': 'application/x-www-form-urlencoded' });
   }
 
+  /**
+   * Logs out the current user.
+   * @returns A Promise that resolves to the logout response.
+   */
+  async logout(): Promise<any> {
+    return this.makeRequest('v1/auth/signout', 'POST');
+  }
+
 }
 
 export default AuthAPI;

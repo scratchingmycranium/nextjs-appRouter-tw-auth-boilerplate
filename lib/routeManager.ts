@@ -1,13 +1,14 @@
 enum RouteKeys {
   HOME = 'HOME',
-  DASHBOARD = 'DASHBOARD',
+  PROFILE = 'PROFILE',
   LOGIN = 'LOGIN',
+  SIGNUP = 'SIGNUP',
 }
 
 /**
  * Represents a route in the application.
  */
-type Route = {
+export type Route = {
   path: string;
   isProtected: boolean;
 };
@@ -22,8 +23,9 @@ class RouteManager {
   private constructor() {
     this.routes = {
       [RouteKeys.HOME]: { path: '/', isProtected: false },
-      [RouteKeys.DASHBOARD]: { path: '/dashboard', isProtected: true },
+      [RouteKeys.PROFILE]: { path: '/profile', isProtected: true },
       [RouteKeys.LOGIN]: { path: '/login', isProtected: false },
+      [RouteKeys.SIGNUP]: { path: '/signup', isProtected: false },
     };
   }
 
@@ -74,6 +76,7 @@ class RouteManager {
    */
   isRouteProtected(key: RouteKeys): boolean | undefined {
     const route = this.getRoute(key);
+    console.log(route)
     return route ? route.isProtected : undefined;
   }
 }

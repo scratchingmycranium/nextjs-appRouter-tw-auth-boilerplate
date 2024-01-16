@@ -6,6 +6,11 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { User } from '@/types/types';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import SessionManager from '@/lib/sessionManager';
+import UserAPI from '@/lib/api/userAPI';
+import AuthAPI from '@/lib/api/authAPI';
+import { useToast } from './ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -52,14 +57,30 @@ type Props = {
 const Navbar = (props: Props) => {
   const { user } = props;
 
+  const { toast } = useToast()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    const authAPI = AuthAPI.getInstance();
+
+    try {
+      const res = await authAPI.logout();
+      router.push('/login')
+      router.refresh();
+    } catch (err) {
+      toast({
+        title: "Error!",
+        description: "Failed to sign out. Try clearing your cookies.",
+        variant: "destructive",
+      });
+    }
+  }
+
   return (
-    <nav className="p-8">
+    <nav className="p-4">
       <div className='flex justify-between'>
         <div className="flex flex-row items-center space-x-4">
-          <a href="/" className="text-2xl">My Boilerplate Site</a>
-          {/* <div className="menu-icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            <FaBars />
-          </div> */}
+          <Link href="/" className="text-2xl">My Boilerplate Site</Link>
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -127,9 +148,12 @@ const Navbar = (props: Props) => {
                   <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <Link href="/login">
-                  <div className="text-sm">Logout</div>
-                </Link>
+                <div
+                  className="text-sm cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </div>
               </div>
             ) : (
               <>

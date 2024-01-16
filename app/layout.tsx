@@ -32,7 +32,6 @@ export default async function RootLayout({
     const api = ssrWrapper(UserAPI)
     try {
       const res = await api.getUser()
-      console.log(res)
       user = res.user
     } catch (err) {
       console.log(err)

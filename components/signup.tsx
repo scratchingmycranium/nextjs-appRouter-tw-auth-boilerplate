@@ -1,6 +1,8 @@
+'use client';
 import React, { useState } from 'react';
 import AuthAPI from '@/lib/api/authAPI';
 import Link from 'next/link';
+import { Button } from './ui/button';
 
 const SignUpForm = () => {
   const authAPI = AuthAPI.getInstance();
@@ -73,17 +75,16 @@ const SignUpForm = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        {error && <p className="text-red-500 text-xs italic">{error}</p>}
-        <div className="flex items-center justify-between">
-          <button
+        {error && <p className="text-red-500 text-xs italic mb-4 text-center">{error}</p>}
+        <div className="flex items-center justify-center">
+          <Button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Sign Up
-          </button>
+          </Button>
         </div>
         <p className="text-center text-gray-600 text-xs mt-4">
-          Already have an account? <Link href="/login"><div className="text-blue-500">Login</div></Link>
+          Already have an account? <Link href="/login"><span className="text-blue-500">Login</span></Link>
         </p>
       </form>
     </div>

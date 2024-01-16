@@ -58,16 +58,42 @@ export class BaseAPI {
     };
 
     const response = await fetch(url, options);
-    if (!response.ok) {
-      const resp = await response.json();
 
+    // Handle non-OK responses
+    if (!response.ok) {
+      let errorMessage = 'An error occurred';
+      if (response.headers.get("content-type")?.includes("application/json")) {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.message || errorMessage;
+      }
       const error: APIError = {
         statusCode: response.status,
-        message: resp.message || 'An error occurred',
+        message: errorMessage,
       };
       throw error;
     }
 
-    return await response.json() as T;
+    // Handle 204 No Content
+    if (response.status === 204) {
+      return {} as T;
+    }
+
+    // Handle OK responses with content
+    if (response) {
+      // Check if the response is JSON before attempting to parse it
+      if (response.headers.get("content-type")?.includes("application/json")) {
+        try {
+          const r = await response.json();
+          return r as T;
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      } else {
+        // Handle case where response is not JSON
+        console.error("Received response is not in JSON format.");
+      }
+    }
+
+    return {} as T;
   }
 }
