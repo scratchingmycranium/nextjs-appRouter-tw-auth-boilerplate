@@ -15,10 +15,7 @@ export async function middleware(request: NextRequest) {
     routeManager.getRoutePath(RouteKeys.LOGIN),
   ]
 
-  // Extract cookies from the request
-  const cookies = request.cookies;
-
-  const sessionManager = new SessionManager(cookies);
+  const sessionManager = new SessionManager(true);
 
   // Check if the session is valid
   const isValid = await sessionManager.isSessionValid();
@@ -36,7 +33,7 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === routeManager.getRoutePath(RouteKeys.LOGIN)) {
     return NextResponse.next()
   }
-  
+
   return NextResponse.redirect(new URL(routeManager.getRoutePath(RouteKeys.LOGIN), request.url))
 }
 

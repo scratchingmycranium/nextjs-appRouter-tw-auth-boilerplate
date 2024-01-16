@@ -1,18 +1,18 @@
 // sessionManager.ts
 import { getCookie } from 'cookies-next';
-import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
+import { cookies } from 'next/headers';
 
 export class SessionManager {
-  private ssrCookies?: RequestCookies;
+  private ssr: boolean;
 
-  constructor(ssrCookies?: RequestCookies) {
-    this.ssrCookies = ssrCookies;
+  constructor(ssr: boolean = false) {
+    this.ssr = ssr;
   }
 
   // Method to get the access token cookie
   getAccessToken(): string | null {
-    if (this.ssrCookies) {
-      return this.ssrCookies.get('LOCAL_AT')?.value || null;
+    if (this.ssr) {
+      return cookies().get('LOCAL_AT')?.value || null;
     }
 
     return getCookie('LOCAL_AT') || null;
@@ -20,8 +20,8 @@ export class SessionManager {
 
   // Method to get the refresh token cookie
   getRefreshToken(): string | null {
-    if (this.ssrCookies) {
-      return this.ssrCookies.get('LOCAL_RT')?.value || null;
+    if (this.ssr) {
+      return cookies().get('LOCAL_RT')?.value || null;
     }
 
     return getCookie('LOCAL_RT') || null;

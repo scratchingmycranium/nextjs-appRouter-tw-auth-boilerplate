@@ -30,6 +30,10 @@ class AuthAPI extends BaseAPI {
     return this.makeRequest('v1/auth/signin', 'POST', credentials,  { 'Content-Type': 'application/x-www-form-urlencoded' });
   }
 
+  async signup(credentials: { email: string; password: string }): Promise<any> {
+    return this.makeRequest('v1/auth/signup', 'POST', credentials,  { 'Content-Type': 'application/x-www-form-urlencoded' });
+  }
+
 }
 
 export default AuthAPI;
